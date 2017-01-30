@@ -56,10 +56,12 @@ class TaylorsCarEmporium extends React.Component {
             carModel: '',
             carYear:  '',
             carColor: '',
-            carPrice: ''
+            carPrice: '',
+            cars: this.props.myCars
         }
 
         this.onChange = this.onChange.bind(this)
+        this.onClick = this.onClick.bind(this)
     }
 
 //you can pass a callback to setState that runs right after the state is updated.
@@ -67,7 +69,26 @@ class TaylorsCarEmporium extends React.Component {
     onChange(e) {
         this.setState({
             [e.currentTarget.name]: e.currentTarget.value
-        }, () => console.log(this.state));
+        });
+    }
+
+    onClick(e) {
+        let newCarList = this.state.cars;
+
+        const newCar = {
+         make: this.state.carMake,
+         model: this.state.carModel,
+         year: this.state.carYear,
+         color: this.state.carColor,
+         price: this.state.carPrice
+        }
+
+        newCarList.push(newCar)
+
+        this.setState({
+            cars: newCarList
+        });
+        
     }
     
     thead() {
@@ -154,6 +175,7 @@ class TaylorsCarEmporium extends React.Component {
                         </tr>
                     </tbody>
                 </table>
+                <button type="button" onClick={this.onClick}>Add Car</button>
             </form>
             </div>
         );
