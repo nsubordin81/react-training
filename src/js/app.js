@@ -45,7 +45,9 @@ class ColorList extends React.Component {
     }
 }
 
-const cars = [{make: 'toyota', model: 'camry', year: 2015, color: 'black', price: '$10,000'}, {make: 'honda', model: 'civic', year: 2009, color: 'white', price: '$9,000'}, {make: 'ford', model: 'focus', year: 2000, color: 'red', price: '$5,000'}]
+const cars = [{make: 'toyota', model: 'camry', year: 2015, color: 'black', price: '$10,000'}, {make: 'honda', model: 'civic', year: 2009, color: 'white', price: '$9,000'}, {make: 'ford', model: 'focus', year: 2000, color: 'red', price: '$5,000'}];
+
+const carSpecs = ['Make','Model','Year','Color','Price'];
 
 class TaylorsCarEmporium extends React.Component {
     constructor(props) {
@@ -73,21 +75,12 @@ class TaylorsCarEmporium extends React.Component {
     }
 
     handleClick(e) {
-
-        // const newCar = {
-        //  make: this.state.carMake,
-        //  model: this.state.carModel,
-        //  year: this.state.carYear,
-        //  color: this.state.carColor,
-        //  price: this.state.carPrice
-        // }
-
-        let testObject = {
-         make: 'a',
-         model: 'b',
-         year: 'c',
-         color: 'd',
-         price: 'e'
+        const newCar = {
+         make: this.state.carMake,
+         model: this.state.carModel,
+         year: this.state.carYear,
+         color: this.state.carColor,
+         price: this.state.carPrice
         }
 
         this.setState({
@@ -101,31 +94,30 @@ class TaylorsCarEmporium extends React.Component {
         
     }
     
-    thead() {
+    thead(headers) {
         return (
             <thead>
                 <tr>
-                    <th>Make</th>
-                    <th>Model</th>
-                    <th>Year</th>
-                    <th>Color</th>
-                    <th>Price</th>
+                    {
+                    headers.map(header =>
+                        <th key={header}>{header}</th>
+                    )}
                 </tr>
             </thead>
         );
     }
 
-    tbody() {
+    tbody(items) {
         return (
             <tbody>
                 {
-                    this.state.carList.map(myCar =>
-                    <tr key={myCar.make + myCar.price}>
-                        <td>{myCar.make}</td>
-                        <td>{myCar.model}</td>
-                        <td>{myCar.year}</td>
-                        <td>{myCar.color}</td>
-                        <td>{myCar.price}</td>
+                    items.map((item, index) =>
+                    <tr key={index}>
+                        <td>{item.make}</td>
+                        <td>{item.model}</td>
+                        <td>{item.year}</td>
+                        <td>{item.color}</td>
+                        <td>{item.price}</td>
                     </tr>
                 )}
             </tbody>
@@ -137,8 +129,8 @@ class TaylorsCarEmporium extends React.Component {
             <div>
                 <h1>Taylor's Car Emporium</h1>                
                 <table>
-                  {this.thead()}
-                  {this.tbody()}   
+                  {this.thead(this.props.mySpecs)}
+                  {this.tbody(this.state.carList)}   
                 </table>
                 <form>
                 <table>
@@ -192,5 +184,5 @@ class TaylorsCarEmporium extends React.Component {
     }
 }
 
-ReactDOM.render(<TaylorsCarEmporium myCars={cars}/>, document.querySelector('main'))
+ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
 // ReactDOM.render(<ColorList myColors={colors} />, document.querySelector('main'))
