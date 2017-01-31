@@ -48,7 +48,6 @@ class ColorTool extends React.Component {
     }
     
     render() {
-        //return React.createElement('h1', null, 'Color List')
         return (
             <div> 
                 <ColorHeader />
@@ -68,6 +67,41 @@ class ColorTool extends React.Component {
 const cars = [{make: 'toyota', model: 'camry', year: 2015, color: 'black', price: '$10,000'}, {make: 'honda', model: 'civic', year: 2009, color: 'white', price: '$9,000'}, {make: 'ford', model: 'focus', year: 2000, color: 'red', price: '$5,000'}];
 
 const carSpecs = ['Make','Model','Year','Color','Price'];
+
+
+class DynamicTableHeaders extends React.Component {
+    render() {
+        return (
+            <thead>
+                <tr>
+                    {
+                        this.props.headers.map(header =>
+                        <th key={header}>{header}</th>
+                    )}
+                </tr>
+            </thead>
+        );
+    }
+}
+
+class DynamicTableBody extends React.Component {
+    render() {
+         return (
+            <tbody>
+                {
+                    this.props.items.map((item, index) =>
+                    <tr key={index}>
+                        <td>{item.make}</td>
+                        <td>{item.model}</td>
+                        <td>{item.year}</td>
+                        <td>{item.color}</td>
+                        <td>{item.price}</td>
+                    </tr>
+                )}
+            </tbody>
+        );
+    }
+}
 
 class TaylorsCarEmporium extends React.Component {
     constructor(props) {
@@ -114,47 +148,17 @@ class TaylorsCarEmporium extends React.Component {
         
     }
     
-    thead(headers) {
-        return (
-            <thead>
-                <tr>
-                    {
-                    headers.map(header =>
-                        <th key={header}>{header}</th>
-                    )}
-                </tr>
-            </thead>
-        );
-    }
-
-    tbody(items) {
-        return (
-            <tbody>
-                {
-                    items.map((item, index) =>
-                    <tr key={index}>
-                        <td>{item.make}</td>
-                        <td>{item.model}</td>
-                        <td>{item.year}</td>
-                        <td>{item.color}</td>
-                        <td>{item.price}</td>
-                    </tr>
-                )}
-            </tbody>
-        );
-    }
-    
     render() {
         return (
             <div>
                 <h1>Taylor's Car Emporium</h1>                
                 <table>
-                  {this.thead(this.props.mySpecs)}
-                  {this.tbody(this.state.carList)}   
+                  <DynamicTableHeaders headers={this.props.mySpecs} />
+                  <DynamicTableBody items={this.state.carList} />   
                 </table>
                 <form>
                 <table>
-                    {this.thead(this.props.mySpecs)}
+                    <DynamicTableHeaders headers={this.props.mySpecs} />
                     <tbody>
                         <tr>
                             <td>
