@@ -24,41 +24,72 @@ class ColorList extends React.Component {
     };
 }
 
+class ColorForm extends React.Component {
+    static propTypes = {
+        addColor: React.PropTypes.func.isRequired
+    }
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            newColor: ''
+        };
+    }
+
+    onChange = (e) => {
+        this.setState({
+            [e.currentTarget.name]: e.currentTarget.value
+        });
+    }
+
+    addNewColor = (e) => {
+        this.props.addColor(this.state.newColor);
+        this.setState({
+            newColor: ''
+        });
+    }
+
+    render() {
+        return (
+        <form>
+            <div>
+                <label htmlFor="new-coor-input"> New Color </label>
+                <input type="text" id="new-color-input" name="newColor"
+                    value={this.state.newColor} onChange={this.onChange} />
+            </div>
+            <button type="button" onClick={this.addNewColor}>Add Color</button> 
+        </form>
+        );
+    }
+}
+
 class ColorTool extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            newColor: ''
+            colors: this.props.myColors.concat()
         };
-
-        // this is actually creating a new onChange function on the instance that is equal to 
-        // the result of binding the parent's onChange function to the instance
-        this.onChange = this.onChange.bind(this);
     }
 
     static propTypes = {
         myColors: React.PropTypes.array
     };
 
-    onChange(e) {
+
+    addColor = (newColor) => {
         this.setState({
-            [e.currentTarget.name]: e.currentTarget.value
-        });
+            colors: this.state.colors.concat(newColor)
+        })
     }
     
     render() {
         return (
             <div> 
                 <ColorHeader />
-                <ColorList items={this.props.myColors} />
-                <form>
-                    <div>
-                        <label htmlFor="new-color-input">New Color</label>
-                        <input type="text" id="new-color-input" name="newColor"
-                            value={this.state.newColor} onChange={this.onChange} />
-                    </div>
-                </form>
+                <ColorList items={this.state.colors} />
+                <ColorForm addColor={this.addColor} />
             </div>
         );
     }
@@ -200,5 +231,5 @@ class TaylorsCarEmporium extends React.Component {
     }
 }
 
-ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
-// ReactDOM.render(<ColorTool myColors={colors} />, document.querySelector('main'))
+// ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
+ReactDOM.render(<ColorTool myColors={colors} />, document.querySelector('main'))
