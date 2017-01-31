@@ -89,7 +89,7 @@ class TaylorsCarEmporium extends React.Component {
             carYear:  '',
             carColor: '',
             carPrice: '',
-            carList: this.state.carList.concat([testObject])
+            carList: this.state.carList.concat([newCar])
         }, () => {console.log(this.state.carList)});
         
     }
