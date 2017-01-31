@@ -57,11 +57,11 @@ class TaylorsCarEmporium extends React.Component {
             carYear:  '',
             carColor: '',
             carPrice: '',
-            cars: this.props.myCars
+            carList: this.props.myCars
         }
 
         this.onChange = this.onChange.bind(this)
-        this.onClick = this.onClick.bind(this)
+        this.handleClick = this.handleClick.bind(this)
     }
 
 //you can pass a callback to setState that runs right after the state is updated.
@@ -72,22 +72,32 @@ class TaylorsCarEmporium extends React.Component {
         });
     }
 
-    onClick(e) {
-        let newCarList = this.state.cars;
+    handleClick(e) {
 
-        const newCar = {
-         make: this.state.carMake,
-         model: this.state.carModel,
-         year: this.state.carYear,
-         color: this.state.carColor,
-         price: this.state.carPrice
+        // const newCar = {
+        //  make: this.state.carMake,
+        //  model: this.state.carModel,
+        //  year: this.state.carYear,
+        //  color: this.state.carColor,
+        //  price: this.state.carPrice
+        // }
+
+        let testObject = {
+         make: 'a',
+         model: 'b',
+         year: 'c',
+         color: 'd',
+         price: 'e'
         }
 
-        newCarList.push(newCar)
-
         this.setState({
-            cars: newCarList
-        });
+            carMake:  '',
+            carModel: '',
+            carYear:  '',
+            carColor: '',
+            carPrice: '',
+            carList: this.state.carList.concat([testObject])
+        }, () => {console.log(this.state.carList)});
         
     }
     
@@ -109,8 +119,8 @@ class TaylorsCarEmporium extends React.Component {
         return (
             <tbody>
                 {
-                    this.props.myCars.map(myCar =>
-                    <tr>
+                    this.state.carList.map(myCar =>
+                    <tr key={myCar.make + myCar.price}>
                         <td>{myCar.make}</td>
                         <td>{myCar.model}</td>
                         <td>{myCar.year}</td>
@@ -175,7 +185,7 @@ class TaylorsCarEmporium extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" onClick={this.onClick}>Add Car</button>
+                <button type="button" onClick={this.handleClick}>Add Car</button>
             </form>
             </div>
         );
