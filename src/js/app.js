@@ -134,33 +134,27 @@ class DynamicTableBody extends React.Component {
     }
 }
 
-class TaylorsCarEmporium extends React.Component {
+class CarForm extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             carMake:  '',
             carModel: '',
             carYear:  '',
             carColor: '',
-            carPrice: '',
-            carList: this.props.myCars
+            carPrice: ''
         }
-
-        this.onChange = this.onChange.bind(this)
-        this.handleClick = this.handleClick.bind(this)
     }
 
-//you can pass a callback to setState that runs right after the state is updated.
-//set state normally registers the state change with a list of updates that will be batch applied later
-    onChange(e) {
+    onChange = (e) => {
         this.setState({
             [e.currentTarget.name]: e.currentTarget.value
         });
     }
 
-    handleClick(e) {
-        const newCar = {
+    addNewCar = (e) => {
+         const newCar = {
          make: this.state.carMake,
          model: this.state.carModel,
          year: this.state.carYear,
@@ -168,26 +162,20 @@ class TaylorsCarEmporium extends React.Component {
          price: this.state.carPrice
         }
 
+        this.props.addCar(newCar)
+
         this.setState({
             carMake:  '',
             carModel: '',
             carYear:  '',
             carColor: '',
             carPrice: '',
-            carList: this.state.carList.concat([newCar])
-        }, () => {console.log(this.state.carList)});
-        
+        })
     }
-    
+
     render() {
         return (
-            <div>
-                <h1>Taylor's Car Emporium</h1>                
-                <table>
-                  <DynamicTableHeaders headers={this.props.mySpecs} />
-                  <DynamicTableBody items={this.state.carList} />   
-                </table>
-                <form>
+            <form>
                 <table>
                     <DynamicTableHeaders headers={this.props.mySpecs} />
                     <tbody>
@@ -224,12 +212,41 @@ class TaylorsCarEmporium extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" onClick={this.handleClick}>Add Car</button>
+                <button type="button" onClick={this.addNewCar}>Add Car</button>
             </form>
+        );
+    }
+}
+
+class TaylorsCarEmporium extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            carList: this.props.myCars
+        }
+    }
+
+    addCar = (newCar) => {
+        this.setState({
+            carList: this.state.carList.concat([newCar])
+        }, () => {console.log(this.state.carList)});
+        
+    }
+    
+    render() {
+        return (
+            <div>
+                <h1>Taylor's Car Emporium</h1>                
+                <table>
+                  <DynamicTableHeaders headers={this.props.mySpecs} />
+                  <DynamicTableBody items={this.state.carList} />   
+                </table>
+                <CarForm addCar={this.addCar} mySpecs={this.props.mySpecs}/>
             </div>
         );
     }
 }
 
-// ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
-ReactDOM.render(<ColorTool myColors={colors} />, document.querySelector('main'))
+ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
+// ReactDOM.render(<ColorTool myColors={colors} />, document.querySelector('main'))
