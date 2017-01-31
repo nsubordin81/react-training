@@ -3,7 +3,28 @@ import ReactDOM from 'react-dom'
 
 const colors = ['green', 'yellow','black','red','white','blue']
 
+class ColorHeader extends React.Component {
+   render() {
+       return <h1>Color Tool</h1>;
+   } 
+}
+
 class ColorList extends React.Component {
+    static propTypes = {
+        items: React.PropTypes.array
+    };
+
+    render() {    
+        return <ul>
+                    {
+                        this.props.items.map(item => 
+                        <li>{item}</li>
+                    )}
+                </ul>
+    };
+}
+
+class ColorTool extends React.Component {
     constructor(props) {
         super(props);
 
@@ -16,6 +37,10 @@ class ColorList extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    static propTypes = {
+        myColors: React.PropTypes.array
+    };
+
     onChange(e) {
         this.setState({
             [e.currentTarget.name]: e.currentTarget.value
@@ -26,13 +51,8 @@ class ColorList extends React.Component {
         //return React.createElement('h1', null, 'Color List')
         return (
             <div> 
-                <h1>Color List</h1>
-                <ul>
-                    {
-                        this.props.myColors.map(myColor => 
-                        <li>{myColor}</li>
-                    )}
-                </ul>
+                <ColorHeader />
+                <ColorList items={this.props.myColors} />
                 <form>
                     <div>
                         <label htmlFor="new-color-input">New Color</label>
@@ -134,15 +154,7 @@ class TaylorsCarEmporium extends React.Component {
                 </table>
                 <form>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Make</th>
-                            <th>Model</th>
-                            <th>Year</th>
-                            <th>Color</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
+                    {this.thead(this.props.mySpecs)}
                     <tbody>
                         <tr>
                             <td>
@@ -185,4 +197,4 @@ class TaylorsCarEmporium extends React.Component {
 }
 
 ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
-// ReactDOM.render(<ColorList myColors={colors} />, document.querySelector('main'))
+// ReactDOM.render(<ColorTool myColors={colors} />, document.querySelector('main'))
