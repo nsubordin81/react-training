@@ -1,252 +1,194 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { ColorTool } from './components/colors/color-tool';
+
+import { TaylorsCarEmporium } from './components/cars/taylors-car-emporium'
+
 const colors = ['green', 'yellow','black','red','white','blue']
-
-class ColorHeader extends React.Component {
-   render() {
-       return <h1>Color Tool</h1>;
-   } 
-}
-
-class ColorList extends React.Component {
-    static propTypes = {
-        items: React.PropTypes.array
-    };
-
-    render() {    
-        return <ul>
-                    {
-                        this.props.items.map(item => 
-                        <li>{item}</li>
-                    )}
-                </ul>
-    };
-}
-
-class ColorForm extends React.Component {
-    static propTypes = {
-        addColor: React.PropTypes.func.isRequired
-    }
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            newColor: ''
-        };
-    }
-
-    onChange = (e) => {
-        this.setState({
-            [e.currentTarget.name]: e.currentTarget.value
-        });
-    }
-
-    addNewColor = (e) => {
-        this.props.addColor(this.state.newColor);
-        this.setState({
-            newColor: ''
-        });
-    }
-
-    render() {
-        return (
-        <form>
-            <div>
-                <label htmlFor="new-coor-input"> New Color </label>
-                <input type="text" id="new-color-input" name="newColor"
-                    value={this.state.newColor} onChange={this.onChange} />
-            </div>
-            <button type="button" onClick={this.addNewColor}>Add Color</button> 
-        </form>
-        );
-    }
-}
-
-class ColorTool extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            colors: this.props.myColors.concat()
-        };
-    }
-
-    static propTypes = {
-        myColors: React.PropTypes.array
-    };
-
-
-    addColor = (newColor) => {
-        this.setState({
-            colors: this.state.colors.concat(newColor)
-        })
-    }
-    
-    render() {
-        return (
-            <div> 
-                <ColorHeader />
-                <ColorList items={this.state.colors} />
-                <ColorForm addColor={this.addColor} />
-            </div>
-        );
-    }
-}
-
-const cars = [{make: 'toyota', model: 'camry', year: 2015, color: 'black', price: '$10,000'}, {make: 'honda', model: 'civic', year: 2009, color: 'white', price: '$9,000'}, {make: 'ford', model: 'focus', year: 2000, color: 'red', price: '$5,000'}];
+const cars = [{id: '1', make: 'toyota', model: 'camry', year: 2015, color: 'black', price: '$10,000'}, {id: '2', make: 'honda', model: 'civic', year: 2009, color: 'white', price: '$9,000'}, {id: '3', make: 'ford', model: 'focus', year: 2000, color: 'red', price: '$5,000'}];
 
 const carSpecs = ['Make','Model','Year','Color','Price'];
 
 
-class DynamicTableHeaders extends React.Component {
-    render() {
-        return (
-            <thead>
-                <tr>
-                    {
-                        this.props.headers.map(header =>
-                        <th key={header}>{header}</th>
-                    )}
-                </tr>
-            </thead>
-        );
-    }
-}
-
-class DynamicTableBody extends React.Component {
-    render() {
-         return (
-            <tbody>
-                {
-                    this.props.items.map((item, index) =>
-                    <tr key={index}>
-                        <td>{item.make}</td>
-                        <td>{item.model}</td>
-                        <td>{item.year}</td>
-                        <td>{item.color}</td>
-                        <td>{item.price}</td>
-                    </tr>
-                )}
-            </tbody>
-        );
-    }
-}
-
-class CarForm extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            carMake:  '',
-            carModel: '',
-            carYear:  '',
-            carColor: '',
-            carPrice: ''
-        }
-    }
-
-    onChange = (e) => {
-        this.setState({
-            [e.currentTarget.name]: e.currentTarget.value
-        });
-    }
-
-    addNewCar = (e) => {
-         const newCar = {
-         make: this.state.carMake,
-         model: this.state.carModel,
-         year: this.state.carYear,
-         color: this.state.carColor,
-         price: this.state.carPrice
-        }
-
-        this.props.addCar(newCar)
-
-        this.setState({
-            carMake:  '',
-            carModel: '',
-            carYear:  '',
-            carColor: '',
-            carPrice: '',
-        })
-    }
-
-    render() {
-        return (
-            <form>
-                <table>
-                    <DynamicTableHeaders headers={this.props.mySpecs} />
-                    <tbody>
-                        <tr>
-                            <td>
-                                <label htmlFor="car-make-input"></label>
-                                <input type="text" id="car-make-input" name="carMake"
-                                    value={this.state.carMake} onChange={this.onChange} />
-                            </td>
-                        
-                            <td>
-                                <label htmlFor="car-model-input"></label>
-                                <input type="text" id="car-model-input" name="carModel"
-                                    value={this.state.carModel} onChange={this.onChange} />
-                            </td>
-                       
-                            <td>
-                                <label htmlFor="car-year-input"></label>
-                                <input type="text" id="car-year-input" name="carYear"
-                                    value={this.state.carYear} onChange={this.onChange} />
-                            </td>
-                       
-                            <td>
-                                <label htmlFor="car-color-input"></label>
-                                <input type="text" id="car-color-input" name="carColor"
-                                    value={this.state.carColor} onChange={this.onChange} />
-                            </td>
-                        
-                            <td>
-                                <label htmlFor="car-price-input"></label>
-                                <input type="text" id="car-price-input" name="carPrice"
-                                    value={this.state.carPrice} onChange={this.onChange} />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button" onClick={this.addNewCar}>Add Car</button>
-            </form>
-        );
-    }
-}
-
-class TaylorsCarEmporium extends React.Component {
+class CarToolContainer extends React.Component{
     constructor(props) {
         super(props)
 
         this.state = {
-            carList: this.props.myCars
-        }
+            cars: []
+        };
     }
 
-    addCar = (newCar) => {
-        this.setState({
-            carList: this.state.carList.concat([newCar])
-        }, () => {console.log(this.state.carList)});
-        
+    componentDidMount() {   
+        fetch('http://localhost:5000/cars')
+            .then(res => res.json())
+            .then(cars => {
+                    this.setState({
+                        cars: cars.concat()
+                    })
+            });
     }
     
     render() {
-        return (
-            <div>
-                <h1>Taylor's Car Emporium</h1>                
-                <table>
-                  <DynamicTableHeaders headers={this.props.mySpecs} />
-                  <DynamicTableBody items={this.state.carList} />   
-                </table>
-                <CarForm addCar={this.addCar} mySpecs={this.props.mySpecs}/>
-            </div>
-        );
+        return (//<div>
+            <TaylorsCarEmporium
+            myCars={this.state.cars} mySpecs={this.props.carSpecs} />
+            // {this.state.cars.map(car =>
+            //     <div>{car.color}</div>
+            // )}
+            // </div>
+        )
     }
 }
 
-ReactDOM.render(<TaylorsCarEmporium myCars={cars} mySpecs={carSpecs}/>, document.querySelector('main'))
+class DemoForm extends React.PureComponent {
+
+    constructor(props) {
+        super(props); 
+
+        this.state = {
+            inputText: '',
+            inputNumber: 0,
+            inputDate: '',
+            inputRange: '',
+            inputColor: '#f3a122',
+            inputCheckbox: true,
+            inputRadio: 'radio2',
+            inputTextArea: '',
+            selectDropDown: '',
+            selectListBox: '',
+            selectMultiSelect: []
+        };
+    }
+
+    onChange = (e) => {
+
+        let controlValue = {};
+
+        switch (e.currentTarget.type) {
+            case 'number':
+                controlValue = Number(e.currentTarget.value);
+                break;
+            case 'checkbox':
+                controlValue = e.currentTarget.checked;
+                break;
+            default:
+                if (e.currentTarget.multiple) {
+                    controlValue = Array.from(e.currentTarget.options)
+                        .filter(option => option.selected)
+                        .map(option => option.value);
+                }
+
+                controlValue = e.currentTarget.value;
+                break;
+        }
+
+        this.setState({
+            [e.currentTarget.name]: controlValue
+        });
+    }
+
+    render() {
+        return <form>
+            <div>
+                <label>Input Text:</label>
+                <input type="text" name="inputText" required value={this.state.inputText} onChange={this.onChange} />
+                <br /><span>{this.state.inputText}, {typeof this.state.inputText}</span>
+            </div>
+              <div>
+                <label>Input Number:</label>
+                <input type="number" name="inputNumber" value={this.state.inputNumber} onChange={this.onChange} />
+                <br /><span>{this.state.inputNumber}, {typeof this.state.inputNumber}</span>
+            </div>
+             <div>
+                <label>Input Date:</label>
+                <input type="date" name="inputDate" value={this.state.inputDate} onChange={this.onChange} />
+                <br /><span>{this.state.inputDate}, {typeof this.state.inputDate}</span>
+            </div>
+             <div>
+                <label>Input Range:</label>
+                <input type="range" name="inputRange" min='20' max='60' value={this.state.inputRange} onChange={this.onChange} />
+                <br /><span>{this.state.inputRange}, {typeof this.state.inputRange}</span>
+            </div>
+             <div>
+                <label>Input Color:</label>
+                <input type="color" name="inputColor" value={this.state.inputColor} onChange={this.onChange} />
+                <br /><span>{this.state.inputColor}, {typeof this.state.inputColor}</span>
+            </div>
+            <div>
+                <label>Input Checkbox:</label>
+                <input type="checkbox" name="inputCheckbox" value={this.state.inputCheckbox} onChange={this.onChange} />
+                <br /><span>{this.state.inputCheckbox ? 'true' : 'false'}, {typeof this.state.inputCheckbox}</span>
+            </div>
+            <fieldset>
+                <legend>Keith is a legend!</legend>
+                <div>
+                    <label>Input Radio 1:</label>
+                    <input type="radio" name="inputRadio" checked={this.state.inputRadio === 'radio1'} value="radio1" onChange={this.onChange} />
+                </div>
+                <div>
+                    <label>Input Radio 2:</label>
+                    <input type="radio" name="inputRadio" checked={this.state.inputRadio === 'radio2'} value="radio2" onChange={this.onChange} />
+                </div>
+                <div>
+                    <label>Input Radio 3:</label>
+                    <input type="radio" name="inputRadio" checked={this.state.inputRadio === 'radio3'} value="radio3" onChange={this.onChange} />
+                </div>
+                <br /><span>{this.state.inputRadio}, {typeof this.state.inputRadio}</span>
+            </fieldset>
+
+             <div>
+                <label>Input TextArea:</label>
+                <textarea  name="inputTextarea" value={this.state.textarea} onChange={this.onChange} />
+                <br /><span>{this.state.inputTextarea ? 'true' : 'false'}, {typeof this.state.textarea}</span>
+            </div>
+            <div>
+                <label>Select DropDown:</label>
+                <select  name="selectDropDown" value={this.state.selectDropDown} onChange={this.onChange} >
+                    <option value='1'> first one</option>
+                    <option value='2'> second one</option>
+                    <option value='3'> third one</option>
+                    <option value='4'> fourth one</option>
+                </select>
+                <br /><span>{this.state.selectDropDown ? 'true' : 'false'}, {typeof this.state.selectDropDown}</span>
+            </div>
+             <div>
+                <label>select list box:</label>
+                <select  name="selectListBox" size="5" value={this.state.selectListBox} onChange={this.onChange} >
+                    <option value='1'> first one</option>
+                    <option value='2'> second one</option>
+                    <option value='3'> third one</option>
+                    <option value='4'> fourth one</option>
+                </select>
+                <br /><span>{this.state.selectListBox ? 'true' : 'false'}, {typeof this.state.selectListBox}</span>
+            </div>
+             <div>
+                <label>select muti select:</label>
+                <select  name="selectMultiSelect" size="5" multiple value={this.state.selectMultiSelect} onChange={this.onChange} >
+                    <option value='1'> first one</option>
+                    <option value='2'> second one</option>
+                    <option value='3'> third one</option>
+                    <option value='4'> fourth one</option>
+                </select>
+                <br /><span>{this.state.selectMultiSelect ? 'true' : 'false'}, {typeof this.state.selectMultiSelect}</span>
+            </div>
+
+        </form>
+    }
+
+}
+
+ReactDOM.render(<DemoForm />, document.querySelector('main'))
+
+    //    let components = (
+    //         <div>
+    //     <TaylorsCarEmporium myCars={theCars} mySpecs={carSpecs}/>
+    //     <ColorTool myColors={colors} />
+    //         </div>
+    //     )
+
+    //     ReactDOM.render(components, document.querySelector('main'))
+
+// ReactDOM.render(<CarToolContainer carSpecs={carSpecs} />, document.querySelector('main'))
 // ReactDOM.render(<ColorTool myColors={colors} />, document.querySelector('main'))

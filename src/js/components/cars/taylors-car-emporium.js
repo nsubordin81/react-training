@@ -9,8 +9,14 @@ export class TaylorsCarEmporium extends React.Component {
         super(props)
 
         this.state = {
-            carList: this.props.myCars
+            carList: this.props.myCars.slice()
         }
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            carList: props.myCars.slice()
+        });
     }
 
     addCar = (newCar) => {
