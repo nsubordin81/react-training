@@ -1,19 +1,28 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+const createAddAction = value => ({
+    type: 'ADD',
+    value
+})
+
+const createSubtractAction = value => ({
+    type: 'SUBTRACT',
+    value
+})
 
 const result = [
-        {type: 'Add', value: 1},
-        {type: 'Subtract', value: 2},
-        {type: 'Add', value: 3},
-        {type: 'subtract', value: 4},
-        {type: 'Add', value: 5}
+        createAddAction(1),
+        createSubtractAction(2),
+        createAddAction(3),
+        createSubtractAction(4),
+        createAddAction(5)
     ].reduce((state, action) => {
     console.log('state: ', state, 'action: ', action);
         switch(action.type) {
-            case 'Add':
+            case 'ADD':
                 return state + action.value;
-            case 'Subtract':
+            case 'SUBTRACT':
                 return state - action.value;
         }
 }, 0);
