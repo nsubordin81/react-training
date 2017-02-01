@@ -25,7 +25,10 @@
       "price": 100000
     },
     {
-      "id": 4
+      "make": "Toyota",
+      "model": "Yaris",
+      "year": 2015,
+      "color": "yellow"
     }
   ],
   "owners": [
